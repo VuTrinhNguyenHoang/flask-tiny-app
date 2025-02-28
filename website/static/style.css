@@ -1,0 +1,81 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e3f2fd; /* Xanh dương nhạt */
+  color: #333; /* Màu chữ tối để dễ đọc */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Căn giữa theo chiều ngang */
+}
+
+/* Thanh điều hướng có chiều rộng tự nhiên theo nội dung */
+.navbar {
+  max-width: 90%; /* Giữ cho thanh navbar không bị bó hẹp */
+  width: 100%;
+  background-color: #64b5f6 !important; /* Xanh dương nhạt */
+  border-radius: 10px; /* Bo góc */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  text-align: center;
+}
+
+.navbar-brand {
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+.container-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  min-height: 70vh; /* Đảm bảo nội dung ở giữa màn hình nhưng không giới hạn kích thước */
+  width: 100%;
+}
+
+.container {
+  max-width: 90%; /* Để container mở rộng tự nhiên theo nội dung */
+  width: 100%;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+  background-color: #1565c0;
+  color: #ffffff;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: 20px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.post-owner, .post-time {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 5px 0;
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background-color: #64b5f6;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #42a5f5;
+}
