@@ -1,64 +1,144 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #e3f2fd; /* Xanh dương nhạt */
-  color: #333; /* Màu chữ tối để dễ đọc */
-  padding: 20px;
+  color: #333;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Căn giữa theo chiều ngang */
+  align-items: center;
 }
 
-/* Thanh điều hướng có chiều rộng tự nhiên theo nội dung */
-.navbar {
-  max-width: 90%; /* Giữ cho thanh navbar không bị bó hẹp */
+.navbar-bg {
+  background-color: #64b5f6 !important;
   width: 100%;
-  background-color: #64b5f6 !important; /* Xanh dương nhạt */
-  border-radius: 10px; /* Bo góc */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  text-align: center;
+  padding: 10px 0;
+}
+
+.navbar {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .navbar-brand {
-  color: #ffffff !important;
+  font-size: 1.7rem;
   font-weight: bold;
+  color: white !important;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
 }
 
-.container-wrapper {
+.logo-hover:hover {
+  color: #e3f2fd !important;
+  transform: scale(1.05);
+  transition: 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  color: white !important;
+  transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #e3f2fd !important;
+}
+
+.navbar-nav .dropdown-toggle img {
+  border: 2px solid #e3f2fd;
+}
+
+/* ============================ */
+/*   Nút đăng nhập / đăng ký    */
+/* ============================ */
+
+.btn-outline-light {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.btn-outline-light:hover {
+  background-color: #ffffff;
+  color: #64b5f6;
+}
+
+.btn-light {
+  background-color: #ffffff;
+  border: none;
+}
+
+.btn-light:hover {
+  background-color: #e3f2fd;
+}
+
+/* ============================ */
+/*      Đăng nhập & Đăng ký     */
+/* ============================ */
+
+.auth-container {
+  min-height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: auto;
-  min-height: 70vh; /* Đảm bảo nội dung ở giữa màn hình nhưng không giới hạn kích thước */
-  width: 100%;
 }
 
-.container {
-  max-width: 90%; /* Để container mở rộng tự nhiên theo nội dung */
-  width: 100%;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-footer {
-  background-color: #1565c0;
-  color: #ffffff;
+.auth-box {
+  max-width: 400px;
+  width: 90%;
+  border-radius: 12px;
+  padding: 25px;
   text-align: center;
-  padding: 10px 0;
-  margin-top: 20px;
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.post-owner, .post-time {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 5px 0;
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
 }
+
+/* ============================ */
+/*      Input & Form Controls   */
+/* ============================ */
+
+.input-group-text {
+  background-color: #e3f2fd;
+  border: none;
+}
+
+.form-control {
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #64b5f6;
+  box-shadow: 0 0 8px rgba(100, 181, 246, 0.5);
+}
+
+.btn-primary {
+  background-color: #64b5f6;
+  border: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #42a5f5;
+  transform: scale(1.02);
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+  color: #42a5f5;
+}
+
+/* ============================ */
+/*      Hiệu ứng bài viết       */
+/* ============================ */
 
 .card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -70,12 +150,13 @@ footer {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-.btn-primary {
-  background-color: #64b5f6;
-  border: none;
-  transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-  background-color: #42a5f5;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
