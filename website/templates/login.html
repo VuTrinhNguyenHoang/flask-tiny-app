@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="login-container d-flex justify-content-center align-items-center min-vh-100"
+>
+  <div class="login-box glassmorphism p-4">
+    <h2 class="text-center mb-3">Đăng Nhập</h2>
+
+    <form method="POST" class="row g-3">
+      <div class="form-group">
+        <label for="username" class="form-label">Tên tài khoản</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Nhập tên tài khoản"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Mật khẩu</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Nhập mật khẩu"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group d-flex justify-content-between align-items-center">
+        <a href="#" class="text-primary forgot-password">Quên mật khẩu?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+    </form>
+
+    <p class="text-center mt-3">
+      Chưa có tài khoản?
+      <a href="{{ url_for('auth.register') }}" class="text-primary fw-bold"
+        >Đăng ký ngay</a
+      >
+    </p>
+  </div>
+</div>
+{% endblock %}
