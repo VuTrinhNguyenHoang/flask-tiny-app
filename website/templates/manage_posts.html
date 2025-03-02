@@ -1,0 +1,89 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Quản lý Bài Viết</h2>
+
+  <form
+    id="post-form"
+    method="POST"
+    action="{{ url_for('posts.delete_posts') }}"
+  >
+    <div class="table-responsive">
+      <table class="table table-hover table-fixed">
+        <thead class="table-light">
+          <tr>
+            <th class="col-1 text-center">
+              <input type="checkbox" id="select-all" />
+            </th>
+            <th class="col-6">Tiêu đề</th>
+            <th class="col-3 text-center">Ngày đăng</th>
+            <th class="col-2 text-center">Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="post-list">
+          <!-- Dữ liệu bài viết sẽ được load từ JSON -->
+        </tbody>
+      </table>
+    </div>
+
+    <button type="submit" class="btn btn-danger mt-3">
+      🗑 Xóa các bài viết đã chọn
+    </button>
+  </form>
+
+  <!-- Nút phân trang -->
+  <div class="pagination">
+    <button id="prev-page" class="btn btn-primary" disabled>⬅ Trước</button>
+    <span id="page-info">Trang 1</span>
+    <button id="next-page" class="btn btn-primary">Tiếp ➡</button>
+  </div>
+</div>
+
+<script>
+  let currentPage = 1;
+  const postList = document.getElementById("post-list");
+  const pageInfo = document.getElementById("page-info");
+  const prevPageBtn = document.getElementById("prev-page");
+  const nextPageBtn = document.getElementById("next-page");
+
+  function loadPosts(page) {
+    fetch(`/api/posts?page=${page}`)
+      .then((response) => response.json())
+      .then((data) => {
+        postList.innerHTML = "";
+        data.posts.forEach((post) => {
+          postList.innerHTML += `
+            <tr>
+              <td class="text-center"><input type="checkbox" name="post_ids" value="${post.id}"></td>
+              <td class="text-truncate" style="max-width: 300px;">${post.title}</td>
+              <td class="text-center">${post.updated_at}</td>
+              <td class="text-center">
+                <a href="/edit/${post.slug}" class="btn btn-warning btn-sm">✏ Chỉnh sửa</a>
+              </td>
+            </tr>
+          `;
+        });
+
+        pageInfo.innerText = `Trang ${page}`;
+        currentPage = page;
+
+        prevPageBtn.disabled = page <= 1;
+        nextPageBtn.disabled = !data.has_next;
+      });
+  }
+
+  document.getElementById("select-all").addEventListener("click", function () {
+    let checkboxes = document.querySelectorAll('input[name="post_ids"]');
+    checkboxes.forEach((checkbox) => (checkbox.checked = this.checked));
+  });
+
+  prevPageBtn.addEventListener("click", () => {
+    if (currentPage > 1) loadPosts(currentPage - 1);
+  });
+
+  nextPageBtn.addEventListener("click", () => {
+    loadPosts(currentPage + 1);
+  });
+
+  loadPosts(1);
+</script>
+{% endblock %}
