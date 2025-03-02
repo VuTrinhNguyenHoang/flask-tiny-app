@@ -20,12 +20,11 @@
   </head>
 
   <body>
-    <!-- Navbar Wrapper để kéo dài full màn hình -->
     <div class="navbar-bg">
       <nav class="navbar navbar-expand-lg">
         <div class="container">
           <a
-            class="navbar-brand d-flex align-items-center text-white fw-bold logo-hover"
+            class="navbar-brand d-flex align-items-center logo-hover"
             href="/"
           >
             <i class="fa-solid fa-book-open me-2"></i> BLOG APP
@@ -43,42 +42,37 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
               {% if user.is_authenticated %}
+              <!-- Quản lý bài viết đưa ra ngoài -->
+              <li class="nav-item">
+                <a class="nav-link btn-manage-posts" href="{{ url_for('posts.manage_posts') }}">
+                  <i class="fa-solid fa-clipboard-list"></i> Quản lý Bài Viết
+                </a>
+              </li>
+
+              <!-- Dropdown người dùng -->
               <li class="nav-item dropdown">
                 <a
-                  class="nav-link dropdown-toggle text-white"
+                  class="nav-link dropdown-toggle"
                   href="#"
                   role="button"
                   data-bs-toggle="dropdown"
                 >
-                  <span class="ms-2"
-                    >Chào mừng bạn, <b>{{ user.username }}</b></span
-                  >
+                  <span class="ms-2">Chào, <b>{{ user.username }}</b></span>
                 </a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="/profile">Hồ sơ</a></li>
-                  <li>
-                    <a class="dropdown-item" href="/my-posts"
-                      >Bài viết của tôi</a
-                    >
-                  </li>
                   <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <a class="dropdown-item text-danger" href="/logout"
-                      >Đăng xuất</a
-                    >
+                    <a class="dropdown-item text-danger" href="/logout">Đăng xuất</a>
                   </li>
                 </ul>
               </li>
               {% else %}
               <li class="nav-item">
-                <a class="btn btn-outline-light me-2" href="/login"
-                  >Đăng nhập</a
-                >
+                <a class="btn btn-outline-light me-2" href="/login">Đăng nhập</a>
               </li>
               <li class="nav-item">
-                <a class="btn btn-light text-primary fw-bold" href="/register"
-                  >Đăng ký</a
-                >
+                <a class="btn btn-light text-primary fw-bold" href="/register">Đăng ký</a>
               </li>
               {% endif %}
             </ul>
