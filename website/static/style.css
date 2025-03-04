@@ -200,6 +200,13 @@ body {
   height: 4.5em;
 }
 
+.card-detail {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ============================ */
 /*      Quản lý Bài Viết        */
 /* ============================ */

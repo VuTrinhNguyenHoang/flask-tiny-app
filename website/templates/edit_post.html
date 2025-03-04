@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Chỉnh sửa bài viết</h2>
+  <div class="card shadow-sm p-4">
+    <form method="POST" action="{{ url_for('posts.edit_post', slug=post.slug) }}">
+      <div class="mb-3">
+        <label for="title" class="form-label">Tiêu đề bài viết</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required />
+      </div>
+      <div class="mb-3">
+        <label for="content" class="form-label">Nội dung bài viết</label>
+        <textarea class="form-control" id="content" name="content" rows="6" required>{{ post.content }}</textarea>
+      </div>
+      <div class="d-flex justify-content-between">
+        <a href="{{ url_for('posts.manage_posts') }}" class="btn btn-secondary">⬅ Quay lại</a>
+        <button type="submit" class="btn btn-primary">💾 Lưu thay đổi</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

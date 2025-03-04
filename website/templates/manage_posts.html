@@ -6,7 +6,20 @@
     id="post-form"
     method="POST"
     action="{{ url_for('posts.delete_posts') }}"
+    style="position: relative"
   >
+    <a
+      href="{{ url_for('posts.create_post') }}"
+      class="btn"
+      style="
+        position: absolute;
+        right: -5%;
+        top: 1%;
+        background-color: #56d49a;
+        border: 1px solid #56d49a;
+      "
+      >➕</a
+    >
     <div class="table-responsive">
       <table class="table table-hover table-fixed">
         <thead class="table-light">
@@ -52,12 +65,12 @@
         postList.innerHTML = "";
         data.posts.forEach((post) => {
           postList.innerHTML += `
-            <tr>
+            <tr class="post-row" data-url="/post/${post.slug}">
               <td class="text-center"><input type="checkbox" name="post_ids" value="${post.id}"></td>
-              <td class="text-truncate" style="max-width: 300px;">${post.title}</td>
+              <td class="text-truncate" style="max-width: 300px; cursor: pointer;">${post.title}</td>
               <td class="text-center">${post.updated_at}</td>
               <td class="text-center">
-                <a href="/edit/${post.slug}" class="btn btn-warning btn-sm">✏ Chỉnh sửa</a>
+                <a href="/edit-post/${post.slug}" class="btn btn-warning btn-sm">✏ Chỉnh sửa</a>
               </td>
             </tr>
           `;
@@ -68,6 +81,12 @@
 
         prevPageBtn.disabled = page <= 1;
         nextPageBtn.disabled = !data.has_next;
+
+        document.querySelectorAll(".post-row").forEach((row) => {
+          row.addEventListener("click", function () {
+            window.location.href = this.getAttribute("data-url");
+          });
+        });
       });
   }
 

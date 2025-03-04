@@ -17,16 +17,27 @@
       href="{{ url_for('static', filename='style.css') }}"
     />
     <title>Flask Tiny App</title>
+    <style>
+      .alert-success {
+        background-color: #d4edda !important;
+        color: #155724 !important;
+      }
+      .alert-error {
+        background-color: #f8d7da !important;
+        color: #721c24 !important;
+      }
+      .alert-warning {
+        background-color: #fff3cd !important;
+        color: #856404 !important;
+      }
+    </style>
   </head>
 
   <body>
     <div class="navbar-bg">
       <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <a
-            class="navbar-brand d-flex align-items-center logo-hover"
-            href="/"
-          >
+          <a class="navbar-brand d-flex align-items-center logo-hover" href="/">
             <i class="fa-solid fa-book-open me-2"></i> BLOG APP
           </a>
 
@@ -42,14 +53,15 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
               {% if user.is_authenticated %}
-              <!-- Quản lý bài viết đưa ra ngoài -->
               <li class="nav-item">
-                <a class="nav-link btn-manage-posts" href="{{ url_for('posts.manage_posts') }}">
-                  <i class="fa-solid fa-clipboard-list"></i> Quản lý Bài Viết
+                <a
+                  class="nav-link btn-manage-posts"
+                  href="{{ url_for('posts.manage_posts') }}"
+                >
+                  <i class="fa-solid fa-clipboard-list"></i> Quản Lý Bài Viết
                 </a>
               </li>
 
-              <!-- Dropdown người dùng -->
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -63,16 +75,22 @@
                   <li><a class="dropdown-item" href="/profile">Hồ sơ</a></li>
                   <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <a class="dropdown-item text-danger" href="/logout">Đăng xuất</a>
+                    <a class="dropdown-item text-danger" href="/logout"
+                      >Đăng xuất</a
+                    >
                   </li>
                 </ul>
               </li>
               {% else %}
               <li class="nav-item">
-                <a class="btn btn-outline-light me-2" href="/login">Đăng nhập</a>
+                <a class="btn btn-outline-light me-2" href="/login"
+                  >Đăng nhập</a
+                >
               </li>
               <li class="nav-item">
-                <a class="btn btn-light text-primary fw-bold" href="/register">Đăng ký</a>
+                <a class="btn btn-light text-primary fw-bold" href="/register"
+                  >Đăng ký</a
+                >
               </li>
               {% endif %}
             </ul>
@@ -81,6 +99,22 @@
       </nav>
     </div>
 
-    <div class="container mt-4">{% block content %} {% endblock %}</div>
+    <div class="container mt-4">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show"
+        role="alert"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %} {% endif %} {% endwith %} {% block content %} {% endblock %}
+    </div>
   </body>
 </html>
