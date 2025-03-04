@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
-from .models import User
-from . import db
+from .models import User, db
 
 auth = Blueprint('auth', __name__)
 
@@ -14,7 +13,10 @@ def login():
 
         user = User.query.filter_by(username=username).first()
         if user:
-            if check_password_hash(user.password, password):
+            if user.blocked:
+                flash('Tài khoản của bạn đã bị khóa', 'warning')
+                return redirect(url_for('auth.login'))
+            elif check_password_hash(user.password, password):
                 flash('Đăng nhập thành công!', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
