@@ -55,11 +55,11 @@ $ pip install -r requirements.txt
 
 ### Chạy chương trình
 
-Khởi chạy chương trình, [http://127.0.0.1:5000](http://127.0.0.1:5000):
+Khởi chạy chương trình:
 ```bash
 $ python main.py
 ```
 
 # Link project đã triển khai
 
-Đang cập nhật ...
+- [http://127.0.0.1:5000](http://127.0.0.1:5000)
