@@ -1,108 +1,114 @@
-{% extends 'base.html' %} {% block content %}
-<div class="container mt-4">
-  <h2 class="text-center mb-4">Quản lý Bài Viết</h2>
+{% extends 'base.html' %}
 
-  <form
-    id="post-form"
-    method="POST"
-    action="{{ url_for('posts.delete_posts') }}"
-    style="position: relative"
-  >
-    <a
-      href="{{ url_for('posts.create_post') }}"
-      class="btn"
-      style="
-        position: absolute;
-        right: -5%;
-        top: 1%;
-        background-color: #56d49a;
-        border: 1px solid #56d49a;
-      "
-      >➕</a
-    >
-    <div class="table-responsive">
-      <table class="table table-hover table-fixed">
-        <thead class="table-light">
-          <tr>
-            <th class="col-1 text-center">
-              <input type="checkbox" id="select-all" />
-            </th>
-            <th class="col-6">Tiêu đề</th>
-            <th class="col-3 text-center">Ngày đăng</th>
-            <th class="col-2 text-center">Hành động</th>
-          </tr>
-        </thead>
-        <tbody id="post-list">
-          <!-- Dữ liệu bài viết sẽ được load từ JSON -->
-        </tbody>
-      </table>
+{% block content %}
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="m-0">
+      <i class="fa-solid fa-clipboard-list"></i> Quản Lý Bài Viết
+    </h2>
+
+    <div>
+      <button type="submit" form="post-form" class="btn btn-danger">
+        <i class="fa-solid fa-trash-alt me-2"></i> Xóa bài viết đã chọn
+      </button>
+      <a href="{{ url_for('posts.create_post') }}" class="btn btn-success">
+        <i class="fa-solid fa-plus me-2"></i> Thêm bài viết
+      </a>
     </div>
+  </div>
 
-    <button type="submit" class="btn btn-danger mt-3">
-      🗑 Xóa các bài viết đã chọn
-    </button>
-  </form>
+  <div class="card p-3">
+    <!-- Bảng danh sách bài viết -->
+    <form id="post-form" method="POST" action="{{ url_for('posts.delete_posts') }}">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th class="text-center">
+                <input type="checkbox" id="select-all" />
+              </th>
+              <th>Tiêu đề</th>
+              <th>Tác giả</th>
+              <th class="text-center">Ngày đăng</th>
+              <th class="text-center">Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="post-table-body">
+            {% for post in posts.items %}
+            <tr class="post-row" data-url="/post/{{ post.slug }}">
+              <td class="text-center">
+                <input type="checkbox" name="post_ids" value="{{ post.id }}" />
+              </td>
+              <td class="text-truncate" style="max-width: 250px; cursor: pointer;">
+                {{ post.title }}
+              </td>
+              <td>{{ post.author.username }}</td>
+              <td class="text-center">
+                {{ post.updated_at.strftime('%Y-%m-%d') }}
+              </td>
+              <td class="text-center">
+                <a href="{{ url_for('posts.edit_post', slug=post.slug) }}" class="btn btn-warning btn-sm">
+                  ✏ Chỉnh sửa
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
 
-  <!-- Nút phân trang -->
-  <div class="pagination">
-    <button id="prev-page" class="btn btn-primary" disabled>⬅ Trước</button>
-    <span id="page-info">Trang 1</span>
-    <button id="next-page" class="btn btn-primary">Tiếp ➡</button>
+    <!-- Pagination -->
+    <nav>
+      <ul class="pagination justify-content-center">
+        {% if posts.has_prev %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('posts.manage_posts', page=posts.prev_num) }}">
+            <i class="fa-solid fa-arrow-left"></i> Trước
+          </a>
+        </li>
+        {% endif %}
+        {% for num in posts.iter_pages() %}
+        {% if num %}
+        <li class="page-item {% if num == posts.page %}active{% endif %}">
+          <a class="page-link" href="{{ url_for('posts.manage_posts', page=num) }}">{{ num }}</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">...</span>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% if posts.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('posts.manage_posts', page=posts.next_num) }}">
+            Tiếp <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
   </div>
 </div>
 
 <script>
-  let currentPage = 1;
-  const postList = document.getElementById("post-list");
-  const pageInfo = document.getElementById("page-info");
-  const prevPageBtn = document.getElementById("prev-page");
-  const nextPageBtn = document.getElementById("next-page");
-
-  function loadPosts(page) {
-    fetch(`/api/posts?page=${page}`)
-      .then((response) => response.json())
-      .then((data) => {
-        postList.innerHTML = "";
-        data.posts.forEach((post) => {
-          postList.innerHTML += `
-            <tr class="post-row" data-url="/post/${post.slug}">
-              <td class="text-center"><input type="checkbox" name="post_ids" value="${post.id}"></td>
-              <td class="text-truncate" style="max-width: 300px; cursor: pointer;">${post.title}</td>
-              <td class="text-center">${post.updated_at}</td>
-              <td class="text-center">
-                <a href="/edit-post/${post.slug}" class="btn btn-warning btn-sm">✏ Chỉnh sửa</a>
-              </td>
-            </tr>
-          `;
-        });
-
-        pageInfo.innerText = `Trang ${page}`;
-        currentPage = page;
-
-        prevPageBtn.disabled = page <= 1;
-        nextPageBtn.disabled = !data.has_next;
-
-        document.querySelectorAll(".post-row").forEach((row) => {
-          row.addEventListener("click", function () {
-            window.location.href = this.getAttribute("data-url");
-          });
-        });
-      });
-  }
-
+  // Chọn tất cả checkbox
   document.getElementById("select-all").addEventListener("click", function () {
     let checkboxes = document.querySelectorAll('input[name="post_ids"]');
     checkboxes.forEach((checkbox) => (checkbox.checked = this.checked));
   });
 
-  prevPageBtn.addEventListener("click", () => {
-    if (currentPage > 1) loadPosts(currentPage - 1);
+  // Điều hướng khi click vào dòng bài viết (trừ checkbox và nút xóa)
+  document.querySelectorAll(".post-row").forEach((row) => {
+    row.addEventListener("click", function (event) {
+      if (
+        event.target.tagName.toLowerCase() === "input" ||
+        event.target.classList.contains("delete-btn")
+      ) {
+        return;
+      }
+      window.location.href = this.getAttribute("data-url");
+    });
   });
-
-  nextPageBtn.addEventListener("click", () => {
-    loadPosts(currentPage + 1);
-  });
-
-  loadPosts(1);
 </script>
 {% endblock %}

@@ -1,16 +1,27 @@
 {% extends 'base.html' %} {% block content %}
-<div class="card no-hover">
-  <div class="card-body">
-    <h2 class="card-title text-center">{{ post.title }}</h2>
+<div class="container">
+  <div class="card p-4 shadow-sm">
+    <h2 class="text-center mb-3">{{ post.title }}</h2>
     <p class="text-muted text-center">
-      Đăng bởi <strong>{{ post.author.username }}</strong> vào ngày {{
+      <i class="fa-solid fa-user"></i> {{ post.author.username }} |
+      <i class="fa-solid fa-calendar"></i> {{
       post.updated_at.strftime('%d/%m/%Y') }}
     </p>
     <hr />
-    <p class="card-detail" style="text-align: justify;">{{ post.content }}</p>
-    <a href="{{ url_for('views.home') }}" class="btn btn-secondary mt-3"
-      >⬅ Quay lại</a
-    >
+    <p class="card-text" style="text-align: justify; font-size: 1.1rem">
+      {{ post.content }}
+    </p>
+
+    <div class="d-flex justify-content-between mt-4">
+      <a href="{{ url_for('views.home') }}" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại
+      </a>
+      {% if user.is_authenticated and (user.id == post.author.id or user.is_admin) %}
+      <a href="{{ url_for('posts.edit_post', slug=post.slug) }}" class="btn btn-warning">
+        ✏ Chỉnh sửa bài viết
+      </a>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endblock %}

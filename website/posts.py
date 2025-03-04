@@ -12,7 +12,16 @@ def post_detail(slug):
 @posts.route('/manage-posts')
 @login_required
 def manage_posts():
-    posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.updated_at.desc()).all()
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    if current_user.is_admin:
+        posts = Post.query.order_by(Post.updated_at.desc()) \
+                        .paginate(page=page, per_page=per_page, error_out=False)
+    else:
+        posts = Post.query.filter_by(user_id=current_user.id) \
+                        .order_by(Post.updated_at.desc()) \
+                        .paginate(page=page, per_page=per_page, error_out=False)
+
     return render_template('manage_posts.html', user=current_user, posts=posts)
 
 @posts.route('/delete-posts', methods=['POST'])
@@ -20,7 +29,10 @@ def manage_posts():
 def delete_posts():
     post_ids = request.form.getlist('post_ids')
     if post_ids:
-        Post.query.filter(Post.id.in_(post_ids), Post.user_id == current_user.id).delete(synchronize_session=False)
+        if current_user.is_admin:
+            Post.query.filter(Post.id.in_(post_ids)).delete(synchronize_session=False)
+        else:
+            Post.query.filter(Post.id.in_(post_ids), Post.user_id == current_user.id).delete(synchronize_session=False)
         db.session.commit()
         flash(f'Đã xóa {len(post_ids)} bài viết thành công', 'success')
     else:
@@ -50,7 +62,7 @@ def create_post():
 @posts.route('/edit-post/<string:slug>', methods=['GET', 'POST'])
 @login_required
 def edit_post(slug):
-    post = Post.query.filter_by(slug=slug, user_id=current_user.id).first_or_404()
+    post = Post.query.filter_by(slug=slug).first_or_404()
 
     if request.method == 'POST':
         title = request.form.get('title')
@@ -71,7 +83,7 @@ def edit_post(slug):
 @posts.route('/api/posts')
 def get_posts():
     page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('limit', 9, type=int)
+    per_page = request.args.get('limit', 10, type=int)
     get_all = request.args.get('all', 'false') == 'true'
 
     if get_all:

@@ -1,12 +1,15 @@
 {% extends 'base.html' %} {% block content %}
 <div
-  class="login-container d-flex justify-content-center align-items-center min-vh-100"
+  class="container d-flex justify-content-center align-items-center"
+  style="min-height: 80vh"
 >
-  <div class="login-box glassmorphism p-4">
-    <h2 class="text-center mb-3">Đăng Nhập</h2>
+  <div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%">
+    <h2 class="text-center mb-3">
+      <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
+    </h2>
 
-    <form method="POST" class="row g-3">
-      <div class="form-group">
+    <form method="POST">
+      <div class="mb-3">
         <label for="username" class="form-label">Tên tài khoản</label>
         <div class="input-group">
           <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
@@ -21,7 +24,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label for="password" class="form-label">Mật khẩu</label>
         <div class="input-group">
           <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
@@ -36,11 +39,9 @@
         </div>
       </div>
 
-      <div class="form-group d-flex justify-content-between align-items-center">
-        <a href="#" class="text-primary forgot-password">Quên mật khẩu?</a>
-      </div>
-
-      <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+      <button type="submit" class="btn btn-primary w-100">
+        <i class="fa-solid fa-sign-in-alt"></i> Đăng nhập
+      </button>
     </form>
 
     <p class="text-center mt-3">

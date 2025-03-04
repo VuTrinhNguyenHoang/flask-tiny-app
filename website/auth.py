@@ -14,7 +14,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user:
             if user.blocked:
-                flash('Tài khoản của bạn đã bị khóa', 'warning')
+                flash('Tài khoản của bạn đã bị khóa', category='warning')
                 return redirect(url_for('auth.login'))
             elif check_password_hash(user.password, password):
                 flash('Đăng nhập thành công!', category='success')
