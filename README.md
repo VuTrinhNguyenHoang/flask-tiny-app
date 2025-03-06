@@ -21,6 +21,11 @@ Clone dự án từ Github:
 $ git clone https://github.com/VuTrinhNguyenHoang/flask-tiny-app.git
 ```
 
+Vào thư mục hệ thống:
+```bash
+$ cd flask-tiny-app
+```
+
 ### Cài đặt mô trường ảo
 
 Trước tiên, đảm bảo bạn đã cài đặt Python (phiên bản ≥ 3.10).
@@ -58,6 +63,18 @@ $ pip install -r requirements.txt
 Khởi chạy chương trình:
 ```bash
 $ python main.py
+```
+
+### Nếu dùng Docker
+
+Sau khi clone dự án từ Github và vào thư mục hệ thống, build docker:
+```bash
+$ docker build -t flask-tiny-app .
+```
+
+Chạy hệ thống:
+```bash
+$ docker run -p 5000:5000 flask-tiny-app
 ```
 
 # Link project đã triển khai

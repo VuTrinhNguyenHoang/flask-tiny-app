@@ -7,8 +7,8 @@ from werkzeug.security import generate_password_hash
 
 fake = Faker()
 
-NUM_USERS = 100
-POSTS_PER_USER = 100
+NUM_USERS = 20
+POSTS_PER_USER = 20
 
 app = create_app()
 
