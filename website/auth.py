@@ -72,3 +72,33 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('views.home'))
+
+@auth.route('/reset-pasword', methods=['GET', 'POST'])
+@login_required
+def reset_password():
+    if request.method == 'POST':
+        old_password = request.form.get('old_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        user = User.query.filter_by(id=current_user.id).first()
+
+        if not check_password_hash(user.password, old_password):
+            flash('Mật khẩu cũ không đúng!', category='warning')
+            return redirect(url_for('auth.reset_password'))
+
+        if len(new_password) < 5:
+            flash('Mật khẩu phải có tối thiểu 5 ký tự', category='warning')
+            return redirect(url_for('auth.reset_password'))
+
+        if new_password != confirm_password:
+            flash('Mật khẩu mới không khớp!', category='warning')
+            return redirect(url_for('auth.reset_password'))
+
+        user.password = generate_password_hash(new_password, method='pbkdf2:sha256')
+        db.session.commit()
+
+        flash('Mật khẩu đã được thay đổi thành công!', category='success')
+        return redirect(url_for('views.home'))
+
+    return render_template('reset_password.html', user=current_user)
